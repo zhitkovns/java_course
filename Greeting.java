@@ -8,7 +8,7 @@ class Greeting {
     
         String name = scanner.nextLine();
         
-        System.out.println("Привет, " + name + "!");
+        System.out.println("Привет, " + name);
         
         scanner.close();
     }
