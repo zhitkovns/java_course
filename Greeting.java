@@ -1,11 +1,10 @@
 import java.util.Scanner;
 
-class Greeting {
+public class Greeting {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in, "CP866");
 
         System.out.print("Введите ваше имя: ");
-    
         String name = scanner.nextLine();
         
         System.out.println("Привет, " + name);
