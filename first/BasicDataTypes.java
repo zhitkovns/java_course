@@ -1,4 +1,5 @@
 package first;
+
 public class BasicDataTypes {
     public static void main(String[] args) {
         // Целочисленные типы
@@ -26,5 +27,26 @@ public class BasicDataTypes {
         double defaultDouble = 0.0;             // нулевое значение для double
         char defaultChar = '\u0000';            // нулевое значение для char (null-символ)
         boolean defaultBoolean = false;         // нулевое значение для boolean
+
+        // Вывод в консоль
+        System.out.println("Значения переменных: ");
+        System.out.println("byte: " + byteValue);
+        System.out.println("short: " + shortValue);
+        System.out.println("int: " + intValue);
+        System.out.println("long: " + longValue);
+        System.out.println("float: " + floatValue);
+        System.out.println("double: " + doubleValue);
+        System.out.println("char: " + charValue);
+        System.out.println("boolean: " + booleanValue);
+
+        System.out.println("\nНулевые значения: ");
+        System.out.println("defaultByte: " + defaultByte);
+        System.out.println("defaultShort: " + defaultShort);
+        System.out.println("defaultInt: " + defaultInt);
+        System.out.println("defaultLong: " + defaultLong);
+        System.out.println("defaultFloat: " + defaultFloat);
+        System.out.println("defaultDouble: " + defaultDouble);
+        System.out.println("defaultChar: '" + defaultChar + "'");
+        System.out.println("defaultBoolean: " + defaultBoolean);
     }
 }
