@@ -1,0 +1,64 @@
+Код:
+```
+int i1 = 128;
+Integer a1 = i1;
+Integer b1 = i1;
+System.out.println("a1==i1 " + (a1 == i1));
+System.out.println("b1==i1 " + (b1 == i1));
+System.out.println("a1==b1 " + (a1 == b1));
+System.out.println("a1.equals(i1) -> " + a1.equals(i1));
+System.out.println("b1.equals(i1) -> " + b1.equals(i1));
+System.out.println("a1.equals(b1) -> " + a1.equals(b1));
+
+int i2 = 127;
+Integer a2 = i2;
+Integer b2 = i2;
+System.out.println("a2==i2 " + (a2 == i2));
+System.out.println("b2==i2 " + (b2 == i2));
+System.out.println("a2==b2 " + (a2 == b2));
+System.out.println("a2.equals(i2) -> " + a2.equals(i2));
+System.out.println("b2.equals(i2) -> " + b2.equals(i2));
+System.out.println("a2.equals(b2) -> " + a2.equals(b2));
+```
+
+
+Результат выполнения кода:
+```
+a1==i1 true
+b1==i1 true
+a1==b1 false
+a1.equals(i1) -> true
+b1.equals(i1) -> true
+a1.equals(b1) -> true
+
+a2==i2 true
+b2==i2 true
+a2==b2 true
+a2.equals(i2) -> true
+b2.equals(i2) -> true
+a2.equals(b2) -> true
+```
+
+Объяснение результата:
+1. Сравнение Integer == int (автораспаковка)
+a1 == i1 и b1 == i1 → true
+a2 == i2 и b2 == i2 → true
+При сравнении Integer == int происходит автораспаковка - Integer преобразуется в int, и сравниваются числовые значения
+
+2. Сравнение Integer == Integer (кэширование)
+a1 == b1 → false (для 128)
+a2 == b2 → true (для 127)
+Здесь сравниваются ссылки на объекты, а не значения
+
+3. Класс IntegerCache
+IntegerCache - это внутренний класс, который кэширует объекты Integer для значений от -128 до 127
+Для этих значений Integer.valueOf() возвращает один и тот же объект из кэша
+Для значений вне этого диапазона создаются новые объекты
+
+4. Почему разные результаты:
+i1 = 128 > 127 → a1 и b1 разные объекты → a1 == b1 = false
+i2 = 127 ≤ 127 → a2 и b2 один объект из кэша → a2 == b2 = true
+
+5. Метод equals()
+equals() всегда сравнивает значения, а не ссылки
+Поэтому все вызовы equals() возвращают true
