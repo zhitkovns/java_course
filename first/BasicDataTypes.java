@@ -1,3 +1,4 @@
+package first;
 class PrimitiveTypes {
     public static void main(String[] args) {
         // Целочисленные типы
