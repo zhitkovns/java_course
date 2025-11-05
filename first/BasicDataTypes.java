@@ -1,5 +1,5 @@
 package first;
-class PrimitiveTypes {
+public class BasicDataTypes {
     public static void main(String[] args) {
         // Целочисленные типы
         byte byteValue = 100;                    // от -128 до 127
