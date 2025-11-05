@@ -147,3 +147,5 @@ public class JavadocExample {
         System.out.println("Число 10 четное: " + example.isEven(10));
     }
 }
+
+// Генерация документации: javadoc -d docs -encoding UTF-8 JavadocExample.java
