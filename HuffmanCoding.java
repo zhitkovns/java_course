@@ -636,15 +636,23 @@ public class HuffmanCoding {
      * @param huffmanCodes таблица кодов Хаффмана
      */
     private static void printEncodingStats(String inputFile, String outputFile, 
-                                         int originalSize, int encodedBitsLength, 
-                                         Map<Byte, String> huffmanCodes) {
-        int compressedSize = (int)Math.ceil(encodedBitsLength / 8.0);
+                                        int originalSize, int encodedBitsLength, 
+                                        Map<Byte, String> huffmanCodes) throws IOException {
+        
+        // Получаем реальный размер сжатого файла
+        File compressedFile = new File(outputFile);
+        int compressedSize = (int)compressedFile.length();
+        
+        // Размер только закодированных данных (без таблицы)
+        int encodedDataSize = (int)Math.ceil(encodedBitsLength / 8.0);
         
         System.out.println("Encoding completed:");
         System.out.println("  Input: " + inputFile);
         System.out.println("  Output: " + outputFile);
         System.out.println("  Original size: " + originalSize + " bytes");
         System.out.println("  Compressed size: " + compressedSize + " bytes");
+        System.out.println("  Encoded data only: " + encodedDataSize + " bytes");
+        System.out.println("  Overhead: " + (compressedSize - encodedDataSize) + " bytes");
         System.out.println("  Compression ratio: " + String.format("%.2f", 
             (1 - (double)compressedSize / originalSize) * 100) + "%");
         
@@ -659,15 +667,53 @@ public class HuffmanCoding {
             for (Map.Entry<Byte, String> entry : sortedCodes) {
                 byte b = entry.getKey();
                 String code = entry.getValue();
-                if (b >= 32 && b <= 126) {
-                    System.out.println("  '" + (char)b + "' (0x" + String.format("%02X", b) + ") -> " + code);
-                } else {
-                    System.out.println("  0x" + String.format("%02X", b) + " -> " + code);
-                }
+                String charRepresentation = getCharRepresentation(b);
+                System.out.println("  " + charRepresentation + " -> " + code);
             }
         } else {
             System.out.println("\nHuffman codes: " + huffmanCodes.size() + " codes generated");
         }
+    }
+
+    /**
+     * Возвращает читаемое представление символа.
+     * 
+     * @param b байт-символ
+     * @return строковое представление символа
+     */
+    private static String getCharRepresentation(byte b) {
+        int unsignedByte = b & 0xFF;
+        
+        // Печатные ASCII символы
+        if (b >= 32 && b <= 126) {
+            // Экранируем обратный слеш и апостроф для красивого вывода
+            char c = (char) b;
+            if (c == '\\') return "'\\\\' (0x" + String.format("%02X", b) + ")";
+            if (c == '\'') return "'\\'' (0x" + String.format("%02X", b) + ")";
+            return "'" + c + "' (0x" + String.format("%02X", b) + ")";
+        }
+        
+        // Специальные символы
+        switch (unsignedByte) {
+            case 0x00: return "'\\0' (0x00)";    // Null
+            case 0x07: return "'\\a' (0x07)";    // Bell
+            case 0x08: return "'\\b' (0x08)";    // Backspace
+            case 0x09: return "'\\t' (0x09)";    // Tab
+            case 0x0A: return "'\\n' (0x0A)";    // New line
+            case 0x0B: return "'\\v' (0x0B)";    // Vertical tab
+            case 0x0C: return "'\\f' (0x0C)";    // Form feed
+            case 0x0D: return "'\\r' (0x0D)";    // Carriage return
+            case 0x1B: return "'\\e' (0x1B)";    // Escape
+            case 0x20: return "' ' (0x20)";      // Space
+        }
+        
+        // Остальные управляющие символы
+        if (unsignedByte < 32) {
+            return "'^" + (char)(unsignedByte + 64) + "' (0x" + String.format("%02X", b) + ")";
+        }
+        
+        // Символы выше 126
+        return "0x" + String.format("%02X", b);
     }
     
     /**
